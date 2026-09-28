@@ -196,10 +196,10 @@ const BottomSheet = ({ isOpen, onClose, products, selectedProduct, onSelectProdu
 
   return (
     <>
-      <div className={`fixed inset-0 z-40 bg-black/30 transition-opacity duration-300 ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"}`} onClick={onClose} aria-hidden="true" />
+      <div className={`fixed inset-0 z-50 bg-black/30 transition-opacity duration-300 ${isOpen ? "opacity-100" : "pointer-events-none opacity-0"}`} onClick={onClose} aria-hidden="true" />
       <section
         role="dialog" aria-modal={isOpen} aria-label={heading} aria-hidden={!isOpen}
-        className={`fixed bottom-0 left-0 right-0 z-50 mx-auto flex max-h-[88dvh] w-full max-w-2xl flex-col rounded-t-3xl bg-white shadow-2xl transition-transform duration-300 ease-out lg:inset-y-0 lg:right-0 lg:left-auto lg:mx-0 lg:max-h-none lg:w-[440px] lg:rounded-none ${isOpen ? "translate-y-0 lg:translate-x-0" : "translate-y-full lg:translate-y-0 lg:translate-x-full"}`}
+        className={`fixed bottom-0 left-0 right-0 z-60 mx-auto flex max-h-[88dvh] w-full max-w-2xl flex-col rounded-t-3xl bg-white shadow-2xl transition-transform duration-300 ease-out lg:inset-y-0 lg:right-0 lg:left-auto lg:mx-0 lg:max-h-none lg:w-[440px] lg:rounded-none ${isOpen ? "translate-y-0 lg:translate-x-0" : "translate-y-full lg:translate-y-0 lg:translate-x-full"}`}
         style={{ pointerEvents: isOpen ? "auto" : "none" }}
       >
         <div className="flex shrink-0 items-center justify-between border-b border-gray-100 px-5 py-4 sm:px-6">
@@ -345,7 +345,7 @@ export default function App() {
       <div className="relative mx-auto min-h-screen w-full max-w-2xl overflow-x-clip border-x border-gray-100 bg-white pb-20 shadow-2xl md:max-w-3xl lg:max-w-5xl xl:max-w-6xl">
 
         {/* Publisher Header */}
-        <header className="px-6 md:px-10 lg:px-16 pb-4 pt-[env(safe-area-inset-top,0px)] border-b border-gray-100 sticky top-0 bg-white/90 backdrop-blur-md z-30">
+        <header className="px-6 md:px-10 lg:px-16 pb-4 pt-[env(safe-area-inset-top,0px)] border-b border-gray-100 sticky top-0 bg-white z-40">
           {/* Main header row */}
           <div className="flex items-center justify-between py-4">
             <button
