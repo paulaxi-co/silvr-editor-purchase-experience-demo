@@ -161,8 +161,7 @@ const ProductCard = ({ product, selected, onClick, onSimilar, similar = false }:
   <article className={`overflow-hidden rounded-2xl border bg-white ${selected ? "border-gray-900" : "border-gray-200"}`}>
     <button type="button" className="block w-full text-left" onClick={onClick} aria-label={`View ${product.name}`}>
       <div className="relative aspect-[4/5] bg-gray-100 p-3">
-        <img src={product.image} alt={`Style reference for ${product.name}`} className="h-full w-full object-contain" loading="lazy" />
-        <span className="absolute bottom-2 left-2 rounded bg-white/90 px-2 py-1 text-[9px] font-medium uppercase tracking-wide text-gray-600">Style reference</span>
+        <img src={product.image} alt={product.name} className="h-full w-full object-contain" loading="lazy" />
       </div>
       <div className="px-3 pt-3">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-500">{similar ? "Similar find · " + product.brand : product.brand}</p>
@@ -224,8 +223,7 @@ const BottomSheet = ({ isOpen, onClose, products, selectedProduct, onSelectProdu
           ) : selectedProduct ? (
             <>
               <div className="relative flex min-h-[250px] items-center justify-center rounded-2xl bg-gray-100 p-6 sm:min-h-[330px]">
-                <img src={selectedProduct.image} alt={`Style reference for ${selectedProduct.name}`} className="max-h-[330px] w-full object-contain" />
-                <span className="absolute bottom-3 left-3 rounded bg-white/90 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-gray-600">Style reference</span>
+                <img src={selectedProduct.image} alt={selectedProduct.name} className="max-h-[330px] w-full object-contain" />
               </div>
               <div className="mt-5 flex items-start justify-between gap-4">
                 <div><p className="text-xs font-semibold uppercase tracking-widest text-gray-500">{relatedProduct ? selectedProduct.brand : "Similar find · " + selectedProduct.brand}</p><h3 className="mt-1 text-xl font-semibold">{selectedProduct.name}</h3></div>
@@ -236,7 +234,7 @@ const BottomSheet = ({ isOpen, onClose, products, selectedProduct, onSelectProdu
                 <span className="flex shrink-0 -space-x-2">{similarItems.slice(0, 3).map((item) => <img key={item.id} src={item.image} alt="" className="h-10 w-10 rounded-md border-2 border-white bg-gray-100 object-cover" />)}</span>
                 <span aria-hidden="true" className="text-2xl text-gray-500">›</span>
               </button>}
-              <p className="mt-4 text-xs leading-5 text-gray-500">Images are style references. Check the retailer's photos, size, availability and final price before buying. Research updated 28 Sep 2026.</p>
+              <p className="mt-4 text-xs leading-5 text-gray-500">Product photos shown here may differ from retailer listings. Check the retailer's photos, size, availability and final price before buying. Research updated 28 Sep 2026.</p>
               {selectedProduct.priceNote && <p className="mt-2 text-xs leading-5 text-gray-500">{selectedProduct.priceNote}</p>}
               <a href={selectedProduct.url} target="_blank" rel="noopener noreferrer" className="mt-6 flex min-h-14 w-full items-center justify-center rounded-xl bg-[#17171d] text-base font-medium text-white" aria-label={`Shop ${selectedProduct.name} at ${selectedProduct.brand} in a new tab`}>Shop at store ↗</a>
             </>
@@ -251,12 +249,12 @@ const BottomSheet = ({ isOpen, onClose, products, selectedProduct, onSelectProdu
 }
 
 const ShopChip = ({ label, count, active, onClick, video = false }: {
-  label: string; count: number; active: boolean; onClick: () => void; video?: boolean
+  label: string; count?: number; active: boolean; onClick: () => void; video?: boolean
 }) => (
   <div className="shop-chip-layer pointer-events-none absolute inset-0 z-30 p-4">
     <div className="shop-chip-sticky flex justify-start">
-      <button type="button" onClick={(event) => { event.stopPropagation(); onClick() }} className={`pointer-events-auto flex min-h-11 items-center gap-2 rounded-full px-4 py-2 text-sm font-medium shadow-lg backdrop-blur-md transition-colors ${video ? "border border-white/30 bg-gray-950/75 text-white hover:bg-gray-950" : "border border-gray-900/10 bg-white/95 text-gray-900 hover:bg-white"}`} aria-label={`${label}, ${count} items`}>
-        <Icons.ShoppingBag /> {label} {!active && <span className="border-l border-current/20 pl-2 opacity-70">{count}</span>}
+      <button type="button" onClick={(event) => { event.stopPropagation(); onClick() }} className={`pointer-events-auto flex min-h-11 items-center gap-2 rounded-full px-4 py-2 text-sm font-medium shadow-lg backdrop-blur-md transition-colors ${video ? "border border-white/30 bg-gray-950/75 text-white hover:bg-gray-950" : "border border-gray-900/10 bg-white/95 text-gray-900 hover:bg-white"}`} aria-label={count === undefined ? label : `${label}, ${count} items`}>
+        <Icons.ShoppingBag /> {label} {count !== undefined && !active && <span className="border-l border-current/20 pl-2 opacity-70">{count}</span>}
       </button>
     </div>
   </div>
@@ -284,7 +282,7 @@ const ShoppableImage = ({ imageSrc, products, nativeWidth }: { imageSrc: string;
           {preview && <ProductPreview product={preview} onEnter={clearLeave} onLeave={scheduleLeave} onOpen={() => openItem(preview)} onSimilar={() => { setSelected(preview); setSimilarTarget(preview); setSheetOpen(true); setPreview(null) }} />}
           <button type="button" className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-gray-950/65 text-white" onClick={(event) => { event.stopPropagation(); setShopMode(false); setPreview(null) }} aria-label="Exit shop mode"><Icons.X size={16} /></button>
         </>}
-        <ShopChip label="Shop This Image" count={products.length} active={shopMode} onClick={() => { if (!shopMode) setShopMode(true); else { setSelected(null); setSimilarTarget(null); setSheetOpen(true) } }} />
+        <ShopChip label="Shop This Image" active={shopMode} onClick={() => { if (!shopMode) setShopMode(true); else { setSelected(null); setSimilarTarget(null); setSheetOpen(true) } }} />
       </div>
       <BottomSheet isOpen={sheetOpen} onClose={closeSheet} products={products} selectedProduct={selected} onSelectProduct={setSelected} similarTarget={similarTarget} onShowSimilar={setSimilarTarget} onClearSimilar={() => setSimilarTarget(null)} />
     </div>
